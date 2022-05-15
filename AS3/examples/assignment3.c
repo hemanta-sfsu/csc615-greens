@@ -17,6 +17,9 @@
 
 //#define BUTTON 2
 
+int RIGHT = 0, LEFT = 0;
+int FOR = 0, BACK = 0;
+
 void Handler(int signo)
 {
     // System Exit
@@ -32,16 +35,43 @@ void turn_right(){
 	printf("\r\nStopping motor B\n");
 	Motor_Stop(MOTORB);
 	printf("\r\nMoving forward\n");
-	Motor_Run(MOTORA,FORWARD, 40);
+	Motor_Run(MOTORA,FORWARD, 65);
+	sleep(3);
+//	FORWARD = 1;
+//	RIGHT = 0;
+///	LEFT = 0;
 }
 void turn_left(){
 	printf("\r\nTurning left\n");
-
 	printf("\r\nStopping motorA\n");
 	Motor_Stop(MOTORA);
 	printf("\r\nMoving forward\n");
-	Motor_Run(MOTORB,FORWARD, 40);
+	Motor_Run(MOTORB,FORWARD, 65);
+	sleep(3);
 }
+
+void move_forward(){
+	printf("\r\nMoving forward\n");
+	// for (UWORD i = 50; i > 0; i = i - 5)
+   	 //{
+	Motor_Run(MOTORB, FORWARD, 60);
+	Motor_Run(MOTORA, FORWARD, 60);
+	sleep(5);
+	
+	//RIGHT = 1;
+//	LEFT = 0;
+//	FORWARD = 0;
+}
+	
+            	
+	
+ /*            if (i > 15)
+             {
+            	Motor_Run(MOTORB, FORWARD, i);
+	    	Motor_Run(MOTORA, FORWARD, i);
+            	usleep(350000);
+             }
+}*/
 
 int main(void)
 {
@@ -65,12 +95,39 @@ int main(void)
     // 2.Motor Initialization
     Motor_Init();
 
+
+    move_forward();
+  while(BACK ==0){
+
+    RIGHT =1;
+    if (RIGHT ==1 && FOR ==0 && LEFT ==0){
+	turn_right();
+	RIGHT =0;
+	LEFT =0;
+	FOR = 1;
+    }
+    if (FOR ==1 && LEFT == 0 && RIGHT ==0){
+	move_forward();
+	FOR = 0;
+	RIGHT = 0;
+    }
+    LEFT = 1;
+    if (LEFT == 1 && RIGHT ==0 && FOR ==0){
+	turn_left();
+	LEFT =0;
+	RIGHT=0;
+	FOR=1;
+	
+    }
+    sleep(1);
+    break;
+   }
+
     // 3. Motor runs forward with decreasing speed from 100 to 15 and stops
-    Motor_Run(MOTORB, FORWARD, 50);
-    sleep(2);
-    Motor_Run(MOTORA, FORWARD, 50);
-    sleep(2);
-    
+   // Motor_Run(MOTORB, FORWARD, 50);
+   // Motor_Run(MOTORA, FORWARD, 50);
+   // sleep(2);
+   /* 
     for (UWORD i = 50; i > 0; i = i - 5)
     {
         if (i > 15)
